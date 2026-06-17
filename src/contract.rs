@@ -52,10 +52,8 @@ pub fn validate_contract(events: &[TraceEvent]) -> Vec<ContractIssue> {
             } if method == "tools/call" => {
                 validate_tool_call_request(&catalog, payload, &mut issues);
             }
-            TraceEvent::RpcResponse { payload, id, .. } => {
-                if is_tool_call_response(events, *id) {
-                    validate_tool_call_response(payload, &mut issues, *id);
-                }
+            TraceEvent::RpcResponse { payload, id, .. } if is_tool_call_response(events, *id) => {
+                validate_tool_call_response(payload, &mut issues, *id);
             }
             _ => {}
         }

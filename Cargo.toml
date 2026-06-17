@@ -1,6 +1,6 @@
 [package]
 name = "mcp-doctor"
-version = "0.2.3"
+version = "0.3.0"
 edition = "2024"
 description = "Record, replay, and debug MCP JSON-RPC from your terminal"
 license = "MIT"

@@ -1,8 +1,8 @@
-# MCP Doctor Launch Checklist
+# MCP Doctor launch checklist
 
-Status: **hold public writeups for now**.
+Status: **launch assets are ready; public posting still needs K's explicit go-ahead**.
 
-K asked for Reddit/Substack writeups later only after the product is fully tested, polished, and has a strong GitHub page with proper tags. Do not publish or draft public claims as if launch is already approved.
+K asked for Reddit/Substack writeups to be prepared, not posted. Do not publish to Reddit, Substack, HN, X, or LinkedIn without a direct follow-up instruction.
 
 ## GitHub readiness
 
@@ -15,14 +15,25 @@ K asked for Reddit/Substack writeups later only after the product is fully teste
 - [x] GitHub repository topics set.
 - [x] At least 3 real-world MCP servers dogfooded.
 - [x] API-backed/auth failure path dogfooded without secrets.
-- [x] Example traces/reports sanitized and checked in under `examples/` or linked from docs.
+- [x] Example traces/reports sanitized and checked in under `examples/`.
 - [x] README viewed on GitHub after push to verify GIF renders and formatting is clean.
-- [ ] Prebuilt release binaries for macOS and Linux.
+- [x] Prebuilt release binaries for macOS x86_64, macOS arm64, Linux x86_64 musl, and Linux arm64 musl.
+- [x] Draft Reddit/Substack launch writeups prepared under `docs/launch/`.
 - [ ] GitHub Actions CI active under `.github/workflows/`.
+
+## CI blocker
+
+The repository has a CI prototype at `docs/prototypes/ci.yml`, but the current GitHub token has scopes:
+
+```text
+admin:public_key, gist, read:org, repo
+```
+
+It does not have `workflow` scope. GitHub rejects pushes that add or update `.github/workflows/*` without that scope. Activate CI by refreshing `gh` auth with workflow scope, then move the prototype to `.github/workflows/ci.yml` and push.
 
 ## Test readiness
 
-Required before any public writeup:
+Required before public posting:
 
 ```bash
 cargo fmt --check
@@ -31,25 +42,29 @@ cargo clippy --all-targets --all-features -- -D warnings
 cargo run -- --help
 cargo run -- smoke stdio -- python3 fixtures/fake_mcp_server.py
 cargo run -- call stdio --tool echo --args '{"text":"hi"}' -- python3 fixtures/fake_mcp_server.py
+vhs validate docs/demo.tape
 ```
 
-Recommended dogfood targets:
+Release builds now also verify these targets:
 
-- a simple official/example MCP server;
-- one filesystem/server-style MCP server;
-- one API-backed MCP server with auth failure paths redacted.
+```text
+x86_64-apple-darwin
+aarch64-apple-darwin
+x86_64-unknown-linux-musl
+aarch64-unknown-linux-musl
+```
 
-## Launch angles to save for later
+## Launch angles
 
-Potential Reddit/HN/Substack framing once ready:
+Use the drafts in `docs/launch/`:
 
-1. **"I built a terminal doctor for MCP servers"** — show trace → validate → replay workflow.
-2. **"MCP needs reproducible bug reports"** — position around server authors and agent-app developers.
-3. **"Debugging MCP JSON-RPC should feel like running a test"** — focus on replay and contract validation.
+1. Reddit: "I built a terminal doctor for MCP servers".
+2. Substack: "MCP needs reproducible bug reports".
+3. Optional HN title: "Show HN: MCP Doctor, a terminal debugger for MCP servers".
 
-## Claims to avoid until proven
+## Claims to avoid
 
-- Do not claim full HTTP/SSE transport parity yet.
+- Do not claim full MCP Streamable HTTP/SSE session parity yet.
 - Do not claim production security auditing.
-- Do not claim broad MCP ecosystem compatibility until dogfooded.
-- Do not market as an Inspector replacement; position as terminal-native reproducibility and CI/debug support.
+- Do not claim broad ecosystem compatibility beyond the dogfooded servers.
+- Do not market it as an Inspector replacement. Position it as terminal-native trace/replay/debug support.

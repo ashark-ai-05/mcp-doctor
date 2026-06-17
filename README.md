@@ -6,7 +6,7 @@
   </p>
   <p align="center">
     <img src="https://img.shields.io/badge/rust-2024-orange" alt="Rust 2024">
-    <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue" alt="Platform">
+    <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Linux-blue" alt="Platform">
     <img src="https://img.shields.io/badge/MCP-JSON--RPC-purple" alt="MCP JSON-RPC">
     <img src="https://img.shields.io/badge/local--first-no%20telemetry-brightgreen" alt="Local-first, no telemetry">
     <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
@@ -60,7 +60,7 @@ cargo build --release
 ./target/release/mcp-doctor --help
 ```
 
-> A macOS x86_64 binary is attached to the latest GitHub release. Source builds remain the most portable path until Linux/macOS release automation is added.
+> Prebuilt macOS and Linux binaries are attached to the latest GitHub release for x86_64 and ARM64. Source builds remain available with `cargo build --release`.
 
 ## 30-second demo
 
@@ -211,10 +211,9 @@ Implemented foundation:
 
 Near-term polish:
 
-- publish Linux and Apple Silicon release binaries;
 - add Homebrew/crates.io packaging;
 - add GitHub Actions once workflow-scoped auth is available;
-- dogfood against API-backed MCP servers with auth failure paths.
+- dogfood against more API-backed MCP servers with auth failure paths.
 
 Product expansion:
 
@@ -236,7 +235,7 @@ cargo run -- smoke stdio -- python3 fixtures/fake_mcp_server.py
 
 ## Launch note
 
-Reddit/Substack/HN-style writeups should wait until the repo has been dogfooded against real MCP servers, release binaries are available, GitHub topics are set, and the README/demo have been rechecked on GitHub. See [`docs/launch-checklist.md`](docs/launch-checklist.md).
+Draft launch writeups are in [`docs/launch/`](docs/launch/). See [`docs/launch-checklist.md`](docs/launch-checklist.md) for the current release/launch state.
 
 ## License
 
