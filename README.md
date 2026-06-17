@@ -211,7 +211,8 @@ Implemented foundation:
 
 Near-term polish:
 
-- add Homebrew/crates.io packaging;
+- publish the Homebrew tap from the prototype formula in `Formula/mcp-doctor.rb`;
+- add crates.io packaging;
 - add GitHub Actions once workflow-scoped auth is available;
 - dogfood against more API-backed MCP servers with auth failure paths.
 
