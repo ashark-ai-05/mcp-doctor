@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  rust:
+    name: Rust quality gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Format
+        run: cargo fmt --check
+      - name: Test
+        run: cargo test
+      - name: Clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+      - name: Smoke fixture
+        run: cargo run -- smoke stdio -- python3 fixtures/fake_mcp_server.py

@@ -1,0 +1,10 @@
+{"type":"session_start","session_id":"1781676180955-65027","ts":1781676180956,"command":["python3","fixtures/fake_mcp_server.py"]}
+{"type":"process_start","ts":1781676180957,"pid":65028}
+{"type":"rpc_request","ts":1781676180957,"id":1,"method":"initialize","payload":{"id":1,"jsonrpc":"2.0","method":"initialize","params":{"capabilities":{},"clientInfo":{"name":"mcp-doctor","version":"0.2.1"},"protocolVersion":"2025-06-18"}}}
+{"type":"rpc_response","ts":1781676181044,"id":1,"duration_ms":85,"payload":{"id":1,"jsonrpc":"2.0","result":{"capabilities":{"tools":{}},"protocolVersion":"2025-06-18","serverInfo":{"name":"fake-mcp","version":"0.1.0"}}}}
+{"type":"rpc_request","ts":1781676181045,"id":null,"method":"notifications/initialized","payload":{"jsonrpc":"2.0","method":"notifications/initialized","params":{}}}
+{"type":"rpc_request","ts":1781676181046,"id":2,"method":"tools/list","payload":{"id":2,"jsonrpc":"2.0","method":"tools/list","params":{}}}
+{"type":"rpc_response","ts":1781676181047,"id":2,"duration_ms":0,"payload":{"id":2,"jsonrpc":"2.0","result":{"tools":[{"description":"Echo text","inputSchema":{"properties":{"text":{"type":"string"}},"required":["text"],"type":"object"},"name":"echo"}]}}}
+{"type":"rpc_request","ts":1781676181048,"id":3,"method":"tools/call","payload":{"id":3,"jsonrpc":"2.0","method":"tools/call","params":{"arguments":{"text":"hello MCP"},"name":"echo"}}}
+{"type":"rpc_response","ts":1781676181051,"id":3,"duration_ms":0,"payload":{"id":3,"jsonrpc":"2.0","result":{"content":[{"text":"hello MCP","type":"text"}]}}}
+{"type":"session_end","ts":1781676181054,"status":"ok"}

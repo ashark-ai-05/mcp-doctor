@@ -1,10 +1,13 @@
 [package]
 name = "mcp-doctor"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2024"
 description = "Record, replay, and debug MCP JSON-RPC from your terminal"
 license = "MIT"
 repository = "https://github.com/ashark-ai-05/mcp-doctor"
+readme = "README.md"
+keywords = ["mcp", "json-rpc", "cli", "debugging", "devtools"]
+categories = ["command-line-utilities", "development-tools::debugging"]
 
 [dependencies]
 anyhow = "1.0"
