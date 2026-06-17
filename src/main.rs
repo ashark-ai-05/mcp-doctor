@@ -157,7 +157,18 @@ fn call_tool(
     })?;
     let mut session = StdioSession::spawn(server, timeout, Some(writer))?;
     session.initialize_and_list_tools()?;
-    let response = session.call_tool(tool, parsed_args)?;
+    let response = match session.call_tool(tool, parsed_args) {
+        Ok(response) => response,
+        Err(err) => {
+            let summary = session.finish("error")?;
+            let trace_path = summary.trace_path.context("trace path unavailable")?;
+            let report_path = trace_path.with_file_name("report.md");
+            report::write_markdown(&trace_path, &report_path)?;
+            eprintln!("trace: {}", trace_path.display());
+            eprintln!("report: {}", report_path.display());
+            return Err(err);
+        }
+    };
     let summary = session.finish("ok")?;
     let trace_path = summary.trace_path.context("trace path unavailable")?;
     let report_path = trace_path.with_file_name("report.md");

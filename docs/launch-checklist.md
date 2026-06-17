@@ -14,6 +14,7 @@ K asked for Reddit/Substack writeups later only after the product is fully teste
 - [x] Safety/non-goals/roadmap.
 - [x] GitHub repository topics set.
 - [x] At least 3 real-world MCP servers dogfooded.
+- [x] API-backed/auth failure path dogfooded without secrets.
 - [x] Example traces/reports sanitized and checked in under `examples/` or linked from docs.
 - [x] README viewed on GitHub after push to verify GIF renders and formatting is clean.
 - [ ] Prebuilt release binaries for macOS and Linux.

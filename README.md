@@ -98,6 +98,8 @@ Example outputs checked into this repo:
 - [`examples/filesystem-list-directory-report.md`](examples/filesystem-list-directory-report.md)
 - [`examples/sequential-thinking-trace.jsonl`](examples/sequential-thinking-trace.jsonl)
 - [`examples/sequential-thinking-report.md`](examples/sequential-thinking-report.md)
+- [`examples/github-auth-failure-trace.jsonl`](examples/github-auth-failure-trace.jsonl)
+- [`examples/github-auth-failure-report.md`](examples/github-auth-failure-report.md)
 
 ## Commands
 
@@ -167,6 +169,7 @@ MCP Doctor has been fixture-tested and dogfooded against three public MCP server
 - `@modelcontextprotocol/server-filesystem`
 - `@modelcontextprotocol/server-memory`
 - `@modelcontextprotocol/server-sequential-thinking`
+- `@modelcontextprotocol/server-github` no-token/auth-failure path
 
 See [`docs/dogfood.md`](docs/dogfood.md) for commands, versions, observed results, and caveats.
 

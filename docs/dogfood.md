@@ -24,6 +24,7 @@ Packages tested:
 | filesystem | pass | pass | pass | pass | pass | `list_directory` matched on replay when using canonical `/private/tmp/...` path on macOS. |
 | memory | pass | pass | pass | pass | expected mismatch | `create_entities` is stateful/non-idempotent, so replay correctly exposed a changed result. |
 | sequential-thinking | pass | pass | pass | pass | pass | Dogfood found and fixed string-format redaction bug that previously collapsed JSON-looking text. |
+| github no-token | pass | pass | pass | auth failure captured | n/a | `create_issue` without token now writes trace/report before returning non-zero. |
 
 ## Commands run
 
@@ -104,6 +105,8 @@ replay: 1 calls, 1 matched, 0 mismatched
 
 ## Bug found and fixed
 
+### Non-secret string formatting
+
 Dogfooding `@modelcontextprotocol/server-sequential-thinking` exposed a bug in MCP Doctor's redaction layer: non-secret strings were passed through `split_whitespace()`, which collapsed newlines/indentation in JSON-looking tool output. That made replay compare a whitespace-flattened recorded response against the live pretty-printed response.
 
 Fix: `redact_text` now preserves non-secret strings exactly and only rewrites strings that contain likely secret assignments or bearer tokens.
@@ -114,8 +117,19 @@ Regression test added:
 redaction::tests::preserves_non_secret_string_formatting
 ```
 
+### Error artifact preservation
+
+Dogfooding `@modelcontextprotocol/server-github` with `GITHUB_TOKEN` and `GITHUB_PERSONAL_ACCESS_TOKEN` explicitly unset exposed a product gap: `call` returned the JSON-RPC tool error before printing trace/report paths.
+
+Fix: failed `tools/call` responses now still finish the session with status `error`, write a report, print trace/report paths to stderr, and return non-zero.
+
+Regression test added:
+
+```text
+call_error_still_records_trace_and_report
+```
+
 ## Remaining launch caveats
 
-- Need more dogfood against API-backed MCP servers with auth failure paths.
-- Need release binaries for more platforms than the current build host.
+- Need Linux and Apple Silicon release binaries from CI/cross-build.
 - GitHub Actions is still a prototype under `docs/prototypes/ci.yml` until workflow-scoped GitHub auth is available.

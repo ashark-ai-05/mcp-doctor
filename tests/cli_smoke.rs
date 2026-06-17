@@ -149,6 +149,46 @@ fn call_records_trace_and_report_then_validate_replay_tui_and_export() {
 }
 
 #[test]
+fn call_error_still_records_trace_and_report() {
+    let cwd = unique_temp_dir();
+    let fixture_path = fixture_abs();
+    let output = run(
+        &cwd,
+        &[
+            "call",
+            "stdio",
+            "--tool",
+            "echo",
+            "--args",
+            r#"{"text":"hi"}"#,
+            "--",
+            "python3",
+            &fixture_path,
+            "--mode",
+            "missing-tool",
+        ],
+    );
+    assert!(!output.status.success());
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(stderr.contains("tool not found"), "stderr={stderr}");
+    let trace_line = stderr
+        .lines()
+        .find(|line| line.starts_with("trace: "))
+        .expect("trace path in stderr");
+    let report_line = stderr
+        .lines()
+        .find(|line| line.starts_with("report: "))
+        .expect("report path in stderr");
+    let trace_path = cwd.join(trace_line.trim_start_matches("trace: ").trim());
+    let report_path = cwd.join(report_line.trim_start_matches("report: ").trim());
+    assert!(trace_path.exists(), "{}", trace_path.display());
+    assert!(report_path.exists(), "{}", report_path.display());
+    let trace_content = std::fs::read_to_string(trace_path).unwrap();
+    assert!(trace_content.contains("tool not found"));
+    assert!(trace_content.contains("\"status\":\"error\""));
+}
+
+#[test]
 fn invalid_json_server_fails_without_panic() {
     let cwd = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let output = run(
