@@ -1,3 +1,4 @@
 /target
+/dist
 .mcpdoctor/
 .DS_Store

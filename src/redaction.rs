@@ -33,6 +33,17 @@ pub fn redact_value(value: &Value) -> Value {
 }
 
 pub fn redact_text(text: &str) -> String {
+    let lower = text.to_ascii_lowercase();
+    let contains_secret_assignment = SECRET_MARKERS
+        .iter()
+        .any(|marker| lower.contains(marker) && text.contains('='));
+    let contains_bearer = lower
+        .split_whitespace()
+        .any(|part| part.starts_with("bearer"));
+    if !contains_secret_assignment && !contains_bearer {
+        return text.to_string();
+    }
+
     let mut out = Vec::new();
     for part in text.split_whitespace() {
         let lower = part.to_ascii_lowercase();
@@ -65,5 +76,11 @@ mod tests {
         assert_eq!(output["headers"]["Authorization"], "[REDACTED]");
         assert_eq!(output["api_key"], "[REDACTED]");
         assert_eq!(output["safe"], "ok");
+    }
+
+    #[test]
+    fn preserves_non_secret_string_formatting() {
+        let text = "{\n  \"thoughtNumber\": 1,\n  \"nextThoughtNeeded\": false\n}";
+        assert_eq!(redact_text(text), text);
     }
 }

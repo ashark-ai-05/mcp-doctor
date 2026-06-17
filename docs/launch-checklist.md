@@ -13,11 +13,11 @@ K asked for Reddit/Substack writeups later only after the product is fully teste
 - [x] Commands reference.
 - [x] Safety/non-goals/roadmap.
 - [x] GitHub repository topics set.
-- [ ] Prebuilt release binaries.
+- [x] At least 3 real-world MCP servers dogfooded.
+- [x] Example traces/reports sanitized and checked in under `examples/` or linked from docs.
+- [x] README viewed on GitHub after push to verify GIF renders and formatting is clean.
+- [ ] Prebuilt release binaries for macOS and Linux.
 - [ ] GitHub Actions CI active under `.github/workflows/`.
-- [ ] At least 3 real-world MCP servers dogfooded.
-- [ ] Example traces/reports sanitized and checked in under `examples/` or linked from docs.
-- [ ] README viewed on GitHub after push to verify GIF renders and formatting is clean.
 
 ## Test readiness
 

@@ -94,6 +94,10 @@ Example outputs checked into this repo:
 
 - [`examples/fake-echo-trace.jsonl`](examples/fake-echo-trace.jsonl)
 - [`examples/fake-echo-report.md`](examples/fake-echo-report.md)
+- [`examples/filesystem-list-directory-trace.jsonl`](examples/filesystem-list-directory-trace.jsonl)
+- [`examples/filesystem-list-directory-report.md`](examples/filesystem-list-directory-report.md)
+- [`examples/sequential-thinking-trace.jsonl`](examples/sequential-thinking-trace.jsonl)
+- [`examples/sequential-thinking-report.md`](examples/sequential-thinking-report.md)
 
 ## Commands
 
@@ -157,6 +161,14 @@ cargo run -- replay old-trace.jsonl \
 Ignore known volatile fields while still catching structural mismatches.
 
 ## Current status
+
+MCP Doctor has been fixture-tested and dogfooded against three public MCP servers:
+
+- `@modelcontextprotocol/server-filesystem`
+- `@modelcontextprotocol/server-memory`
+- `@modelcontextprotocol/server-sequential-thinking`
+
+See [`docs/dogfood.md`](docs/dogfood.md) for commands, versions, observed results, and caveats.
 
 Implemented foundation:
 
