@@ -1,0 +1,16 @@
+[package]
+name = "mcp-doctor"
+version = "0.1.0"
+edition = "2024"
+description = "Record, replay, and debug MCP JSON-RPC from your terminal"
+license = "MIT"
+repository = "https://github.com/ashark-ai-05/mcp-doctor"
+
+[dependencies]
+anyhow = "1.0"
+clap = { version = "4.5", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "2.0"
+
+[dev-dependencies]
