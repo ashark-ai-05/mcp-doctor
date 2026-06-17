@@ -60,7 +60,7 @@ cargo build --release
 ./target/release/mcp-doctor --help
 ```
 
-> Packaged binaries/Homebrew/crates.io are release-roadmap items. Source builds are the supported path today.
+> A macOS x86_64 binary is attached to the latest GitHub release. Source builds remain the most portable path until Linux/macOS release automation is added.
 
 ## 30-second demo
 
@@ -208,10 +208,10 @@ Implemented foundation:
 
 Near-term polish:
 
-- publish prebuilt release binaries;
+- publish Linux and Apple Silicon release binaries;
 - add Homebrew/crates.io packaging;
 - add GitHub Actions once workflow-scoped auth is available;
-- dogfood against real-world MCP servers and add fixture traces.
+- dogfood against API-backed MCP servers with auth failure paths.
 
 Product expansion:
 
