@@ -164,8 +164,10 @@ impl StdioSession {
                     }
                     .into());
                 }
-                if !protocol::is_success_response(&response)
-                    && let Some(trace) = self.trace.as_mut()
+                if let Some(trace) = self
+                    .trace
+                    .as_mut()
+                    .filter(|_| !protocol::is_success_response(&response))
                 {
                     trace.write(&TraceEvent::Validation {
                         ts: now_ms(),

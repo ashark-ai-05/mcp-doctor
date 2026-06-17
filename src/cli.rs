@@ -33,10 +33,18 @@ pub enum Command {
     Call(CallCommand),
     /// Replay recorded tools/call requests against a server.
     Replay(ReplayCommand),
+    /// Diff two traces for tool/schema breaking changes.
+    Diff(DiffCommand),
     /// Validate a saved trace without running a server.
     Validate(TracePathCommand),
     /// Export a markdown diagnostic report from a trace.
     Report(ReportCommand),
+    /// Show a read-only terminal trace view.
+    Tui(TracePathCommand),
+    /// Export a reproducible replay script.
+    ExportRepro(ReportCommand),
+    /// Connect to an HTTP MCP endpoint and list tools.
+    Connect(ConnectCommand),
 }
 
 #[derive(Debug, Args)]
@@ -90,9 +98,21 @@ pub struct ReplayCommand {
     /// Trace JSONL file to replay.
     pub trace: PathBuf,
 
+    /// Ignore changed fields while comparing replay results. Dot paths, e.g. content.0.text.
+    #[arg(long = "allow-field")]
+    pub allow_fields: Vec<String>,
+
     /// Server command and args, after `--`.
     #[arg(last = true, required = true)]
     pub server: Vec<String>,
+}
+
+#[derive(Debug, Args)]
+pub struct DiffCommand {
+    /// Old/baseline trace JSONL file.
+    pub old: PathBuf,
+    /// New trace JSONL file.
+    pub new: PathBuf,
 }
 
 #[derive(Debug, Args)]
@@ -106,7 +126,25 @@ pub struct ReportCommand {
     /// Trace JSONL file.
     pub trace: PathBuf,
 
-    /// Markdown output path.
+    /// Output path.
     #[arg(long)]
     pub output: PathBuf,
+}
+
+#[derive(Debug, Args)]
+pub struct ConnectCommand {
+    #[command(subcommand)]
+    pub transport: ConnectTransport,
+}
+
+#[derive(Debug, Subcommand)]
+pub enum ConnectTransport {
+    /// Connect to a Streamable HTTP-ish MCP endpoint with JSON POST requests.
+    Http(HttpConnectCommand),
+}
+
+#[derive(Debug, Args)]
+pub struct HttpConnectCommand {
+    /// MCP HTTP endpoint URL.
+    pub url: String,
 }

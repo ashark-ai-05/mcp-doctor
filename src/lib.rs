@@ -1,9 +1,14 @@
 pub mod cli;
+pub mod contract;
+pub mod diff;
 pub mod error;
+pub mod export;
+pub mod http;
 pub mod protocol;
 pub mod redaction;
 pub mod replay;
 pub mod report;
 pub mod session;
 pub mod trace;
+pub mod tui;
 pub mod validate;

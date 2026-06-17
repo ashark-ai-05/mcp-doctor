@@ -1,10 +1,16 @@
 use anyhow::Context;
 use clap::Parser;
-use mcp_doctor::cli::{CallTransport, Cli, Command as CliCommand, StdioTransport};
+use mcp_doctor::cli::{
+    CallTransport, Cli, Command as CliCommand, ConnectTransport, StdioTransport,
+};
+use mcp_doctor::diff::diff_events;
+use mcp_doctor::export;
+use mcp_doctor::http;
 use mcp_doctor::replay::replay_trace;
 use mcp_doctor::report;
 use mcp_doctor::session::{StdioSession, count_tools};
 use mcp_doctor::trace::{TraceEvent, TraceWriter, default_trace_path, new_session_id, now_ms};
+use mcp_doctor::tui;
 use mcp_doctor::validate::validate_events;
 use serde_json::Value;
 
@@ -23,7 +29,7 @@ fn main() -> anyhow::Result<()> {
             }
         },
         CliCommand::Replay(cmd) => {
-            let result = replay_trace(&cmd.trace, &cmd.server, cli.timeout())?;
+            let result = replay_trace(&cmd.trace, &cmd.server, cli.timeout(), &cmd.allow_fields)?;
             println!(
                 "replay: {} calls, {} matched, {} mismatched",
                 result.replayed,
@@ -32,6 +38,19 @@ fn main() -> anyhow::Result<()> {
             );
             for mismatch in result.mismatched {
                 println!("mismatch: {mismatch}");
+            }
+            Ok(())
+        }
+        CliCommand::Diff(cmd) => {
+            let old = mcp_doctor::trace::read_trace(&cmd.old)?;
+            let new = mcp_doctor::trace::read_trace(&cmd.new)?;
+            let diff = diff_events(&old, &new);
+            if diff.is_empty() {
+                println!("no tool/schema differences detected");
+            } else {
+                for change in diff.changes {
+                    println!("change: {change}");
+                }
             }
             Ok(())
         }
@@ -60,6 +79,29 @@ fn main() -> anyhow::Result<()> {
             println!("wrote report: {}", cmd.output.display());
             Ok(())
         }
+        CliCommand::Tui(cmd) => {
+            print!("{}", tui::render_trace_view(&cmd.trace)?);
+            Ok(())
+        }
+        CliCommand::ExportRepro(cmd) => {
+            export::export_repro(&cmd.trace, &cmd.output)?;
+            println!("wrote repro script: {}", cmd.output.display());
+            Ok(())
+        }
+        CliCommand::Connect(cmd) => match &cmd.transport {
+            ConnectTransport::Http(http_cmd) => {
+                let result = http::connect_http(&http_cmd.url, cli.timeout())?;
+                println!(
+                    "initialize: {}",
+                    serde_json::to_string_pretty(&result.initialize)?
+                );
+                println!(
+                    "tools/list: {}",
+                    serde_json::to_string_pretty(&result.tools)?
+                );
+                Ok(())
+            }
+        },
     }
 }
 

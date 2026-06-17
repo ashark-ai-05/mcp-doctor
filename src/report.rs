@@ -1,3 +1,4 @@
+use crate::contract::validate_contract;
 use crate::trace::{TraceEvent, read_trace, truncate};
 use crate::validate::validate_events;
 use anyhow::Context;
@@ -7,6 +8,7 @@ use std::path::Path;
 pub fn render_markdown(trace_path: impl AsRef<Path>) -> anyhow::Result<String> {
     let events = read_trace(&trace_path)?;
     let issues = validate_events(&events);
+    let contract_issues = validate_contract(&events);
     let mut out = String::new();
     writeln!(&mut out, "# MCP Doctor Report")?;
     writeln!(&mut out)?;
@@ -31,6 +33,29 @@ pub fn render_markdown(trace_path: impl AsRef<Path>) -> anyhow::Result<String> {
     writeln!(&mut out, "- RPC responses: {responses}")?;
     writeln!(&mut out, "- Stderr lines: {stderr}")?;
     writeln!(&mut out, "- Validation issues: {}", issues.len())?;
+    writeln!(&mut out, "- Contract issues: {}", contract_issues.len())?;
+    writeln!(&mut out)?;
+    writeln!(&mut out, "## Executive summary")?;
+    writeln!(&mut out)?;
+    if issues
+        .iter()
+        .any(|issue| issue.severity == crate::trace::Severity::Error)
+    {
+        writeln!(
+            &mut out,
+            "This trace contains protocol/contract errors. See Findings for exact targets and suggested fixes."
+        )?;
+    } else if contract_issues.is_empty() {
+        writeln!(
+            &mut out,
+            "No protocol or contract errors were detected in this trace."
+        )?;
+    } else {
+        writeln!(
+            &mut out,
+            "This trace has non-fatal contract warnings to review."
+        )?;
+    }
     writeln!(&mut out)?;
     writeln!(&mut out, "## Findings")?;
     writeln!(&mut out)?;
@@ -38,6 +63,17 @@ pub fn render_markdown(trace_path: impl AsRef<Path>) -> anyhow::Result<String> {
         writeln!(&mut out, "No validation issues found.")?;
     } else {
         for issue in &issues {
+            writeln!(
+                &mut out,
+                "- {:?}: `{}` — {}",
+                issue.severity, issue.target, issue.message
+            )?;
+        }
+    }
+    if !contract_issues.is_empty() {
+        writeln!(&mut out)?;
+        writeln!(&mut out, "### Contract findings")?;
+        for issue in &contract_issues {
             writeln!(
                 &mut out,
                 "- {:?}: `{}` — {}",

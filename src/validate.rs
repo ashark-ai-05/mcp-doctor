@@ -1,3 +1,4 @@
+use crate::contract::validate_contract;
 use crate::protocol;
 use crate::trace::{Severity, TraceEvent};
 
@@ -77,6 +78,13 @@ pub fn validate_events(events: &[TraceEvent]) -> Vec<ValidationIssue> {
             severity: Severity::Warning,
             target: "trace".to_string(),
             message: "trace has no session_end event".to_string(),
+        });
+    }
+    for issue in validate_contract(events) {
+        issues.push(ValidationIssue {
+            severity: issue.severity,
+            target: issue.target,
+            message: issue.message,
         });
     }
     issues

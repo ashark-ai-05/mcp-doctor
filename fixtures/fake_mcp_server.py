@@ -4,7 +4,7 @@ import json
 import sys
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--mode", choices=["ok", "invalid-json", "schema-change", "missing-tool", "stderr-auth"], default="ok")
+parser.add_argument("--mode", choices=["ok", "invalid-json", "schema-change", "schema-required", "malformed-content", "missing-tool", "stderr-auth"], default="ok")
 args = parser.parse_args()
 
 if args.mode == "stderr-auth":
@@ -13,6 +13,17 @@ if args.mode == "stderr-auth":
 def write(obj):
     sys.stdout.write(json.dumps(obj, separators=(",", ":")) + "\n")
     sys.stdout.flush()
+
+def input_schema():
+    schema = {
+        "type": "object",
+        "properties": {"text": {"type": "string"}},
+        "required": ["text"],
+    }
+    if args.mode == "schema-required":
+        schema["properties"]["limit"] = {"type": "integer"}
+        schema["required"] = ["text", "limit"]
+    return schema
 
 for raw in sys.stdin:
     raw = raw.strip()
@@ -44,11 +55,7 @@ for raw in sys.stdin:
         tools = [] if args.mode == "missing-tool" else [{
             "name": "echo",
             "description": "Echo text",
-            "inputSchema": {
-                "type": "object",
-                "properties": {"text": {"type": "string"}},
-                "required": ["text"],
-            },
+            "inputSchema": input_schema(),
         }]
         write({"jsonrpc": "2.0", "id": msg_id, "result": {"tools": tools}})
     elif method == "tools/call":
@@ -61,6 +68,8 @@ for raw in sys.stdin:
             text = arguments.get("text", "")
             if args.mode == "schema-change":
                 result = {"content": [{"type": "text", "text": f"changed:{text}"}]}
+            elif args.mode == "malformed-content":
+                result = {"content": [{"type": "text", "value": text}]}
             else:
                 result = {"content": [{"type": "text", "text": text}]}
             write({"jsonrpc": "2.0", "id": msg_id, "result": result})
