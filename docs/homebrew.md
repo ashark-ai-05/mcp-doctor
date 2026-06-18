@@ -29,8 +29,8 @@ Verified locally on 2026-06-17:
 
 ```text
 brew style ashark-ai-05/tap/mcp-doctor: no offenses
-brew install ashark-ai-05/tap/mcp-doctor: installed 0.3.0
-mcp-doctor --version: mcp-doctor 0.3.0
+brew install ashark-ai-05/tap/mcp-doctor: installed 0.4.0
+mcp-doctor --version: mcp-doctor 0.4.0
 brew test ashark-ai-05/tap/mcp-doctor: passed
 ```
 

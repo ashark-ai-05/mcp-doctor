@@ -1,6 +1,6 @@
 [package]
 name = "mcp-doctor"
-version = "0.3.0"
+version = "0.4.0"
 edition = "2024"
 description = "Record, replay, and debug MCP JSON-RPC from your terminal"
 license = "MIT"
@@ -12,6 +12,8 @@ categories = ["command-line-utilities", "development-tools::debugging"]
 [dependencies]
 anyhow = "1.0"
 clap = { version = "4.5", features = ["derive"] }
+crossterm = "0.28"
+ratatui = "0.29"
 reqwest = { version = "0.12", default-features = false, features = ["blocking", "json", "rustls-tls"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

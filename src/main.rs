@@ -79,10 +79,7 @@ fn main() -> anyhow::Result<()> {
             println!("wrote report: {}", cmd.output.display());
             Ok(())
         }
-        CliCommand::Tui(cmd) => {
-            print!("{}", tui::render_trace_view(&cmd.trace)?);
-            Ok(())
-        }
+        CliCommand::Tui(cmd) => tui::run_trace_view(&cmd.trace),
         CliCommand::ExportRepro(cmd) => {
             export::export_repro(&cmd.trace, &cmd.output)?;
             println!("wrote repro script: {}", cmd.output.display());

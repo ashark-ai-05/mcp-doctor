@@ -1,26 +1,26 @@
 class McpDoctor < Formula
   desc "Record, replay, and debug MCP JSON-RPC sessions from your terminal"
   homepage "https://github.com/ashark-ai-05/mcp-doctor"
-  version "0.3.0"
+  version "0.4.0"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/ashark-ai-05/mcp-doctor/releases/download/v0.3.0/mcp-doctor-0.3.0-macos-arm64.tar.gz"
-      sha256 "5fcc2126c0386c4fe1b4cf79a42ee4ab05c7a4f9d739235a65dd82f0e5dd74fc"
+      url "https://github.com/ashark-ai-05/mcp-doctor/releases/download/v0.4.0/mcp-doctor-0.4.0-macos-arm64.tar.gz"
+      sha256 "ce178de98e5198ddc730f12dc086e74f7056f70c5222afbb36278cb1f649e25b"
     else
-      url "https://github.com/ashark-ai-05/mcp-doctor/releases/download/v0.3.0/mcp-doctor-0.3.0-macos-x86_64.tar.gz"
-      sha256 "e40af9ce0bf727798f32fcb411eedc89cf3d811e12438e8767d4b2ccb6e8644d"
+      url "https://github.com/ashark-ai-05/mcp-doctor/releases/download/v0.4.0/mcp-doctor-0.4.0-macos-x86_64.tar.gz"
+      sha256 "9de944c9152a3af56d4b205ddb29b04ab321ec5f20e58d86071180b88ada9c2e"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/ashark-ai-05/mcp-doctor/releases/download/v0.3.0/mcp-doctor-0.3.0-linux-arm64-musl.tar.gz"
-      sha256 "969b7df67b468e2c681fb25af560dae0abc45fd86169935faf485b321d905ce8"
+      url "https://github.com/ashark-ai-05/mcp-doctor/releases/download/v0.4.0/mcp-doctor-0.4.0-linux-arm64-musl.tar.gz"
+      sha256 "ab9ae848f2352df51012d2c050327bd1cabbe2eb6ba2151fdf9329c5d658b036"
     else
-      url "https://github.com/ashark-ai-05/mcp-doctor/releases/download/v0.3.0/mcp-doctor-0.3.0-linux-x86_64-musl.tar.gz"
-      sha256 "156d32ff9cbb5f3348bd17ce370998b40c4537d0c4850a6911fde16380049d46"
+      url "https://github.com/ashark-ai-05/mcp-doctor/releases/download/v0.4.0/mcp-doctor-0.4.0-linux-x86_64-musl.tar.gz"
+      sha256 "348602dee2c39a7f824f2478b52d77c94b9fe1f72867b7a1876641ff6fca38ef"
     end
   end
 

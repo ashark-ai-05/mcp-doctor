@@ -90,6 +90,8 @@ cargo run -- report "$TRACE" --output repro.md
 cargo run -- export-repro "$TRACE" --output replay.sh
 ```
 
+`tui` opens an interactive terminal trace browser when stdout is a TTY. Use ↑/↓ or j/k to move through JSON-RPC events, h for help, and q to quit. In non-interactive output, it prints a polished snapshot with the same timeline, findings, and payload preview.
+
 Example outputs checked into this repo:
 
 - [`examples/fake-echo-trace.jsonl`](examples/fake-echo-trace.jsonl)
@@ -186,6 +188,7 @@ Implemented foundation:
 - trace diff for tool/schema breaking changes;
 - Markdown report export;
 - read-only terminal trace viewer;
+- polished interactive Ratatui trace browser with timeline, payload, findings, and help panes;
 - reproducible replay script export;
 - basic HTTP JSON POST MCP endpoint probe;
 - secret redaction for likely token/password/secret/api_key/auth keys;
@@ -218,11 +221,10 @@ Near-term polish:
 
 Product expansion:
 
-- full interactive Ratatui timeline browser;
+- GitHub issue bundle export;
 - full MCP Streamable HTTP/SSE session semantics;
 - schema-aware golden test generation;
 - passive proxy mode;
-- GitHub issue bundle export.
 
 ## Development checks
 

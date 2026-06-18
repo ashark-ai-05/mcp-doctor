@@ -40,7 +40,9 @@ Sleep 350ms
 Type '$md validate "$TRACE"' Enter
 Sleep 800ms
 
-Type '$md tui "$TRACE"' Enter
+Type 'printf "\\033c"' Enter
+Sleep 500ms
+Type '$md tui "$TRACE" | head -26' Enter
 Sleep 1.8s
 
 Type '$md export-repro "$TRACE" --output /tmp/mcp-doctor-replay.sh' Enter
